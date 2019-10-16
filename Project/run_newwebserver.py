@@ -31,8 +31,6 @@ def parse_sysargs():
 		"location_constraint": "eu-west-1"
 	}
 
-	# TODO: FIX CONFIG NOT UPDATING PROPERLY
-
 	for i in range(1, len(sys.argv)):
 		config[config_order[i-1]] = sys.argv[i]
 

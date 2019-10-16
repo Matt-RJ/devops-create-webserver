@@ -49,7 +49,8 @@ def create_ec2_instance(ec2_resource, image_id, key_name, security_group_name, i
 def ssh_into_ec2_instance(key_name, instance_ip, commands):
 	""" Executes commands on an instance using SSH """
 	key = "key/" + key_name + ".pem"
-	attempts = 5
+	attempts = 8
+	user_error_message = "An SSH connection could not be established after " + str(attempts) + " attempts."
 	success = False
 
 	print("Attempting to SSH into the instance...")
@@ -65,13 +66,14 @@ def ssh_into_ec2_instance(key_name, instance_ip, commands):
 				#stderr=subprocess.STDOUT
 			)
 			success = True
+			attempts = 0
+			
 			break
 		except Exception as e:
 			pass
 		time.sleep(1)
 
 	if (not success):
-		user_error_message = "An SSH connection could not be established."
 		print(user_error_message)
 		create_log(user_error_message, "")
 		exit_program()

@@ -15,7 +15,7 @@ def create_log(user_error_message, exception_message):
 
 	# Writes log file
 	file = open(dir_name + "/" + file_name, "w+")
-	file.write("An error has occurred while running run_newwebserver.py:\nTime: " +
+	file.write("An error has occurred while running " + os.path.basename(__file__) + ":\nTime: " +
 		log_datetime + "\n\n" + user_error_message + "\n" + str(exception_message))
 	file.close()
 
