@@ -49,30 +49,26 @@ def create_ec2_instance(ec2_resource, image_id, key_name, security_group_name, i
 def ssh_into_ec2_instance(key_name, instance_ip, commands):
 	""" Executes commands on an instance using SSH """
 	key = "key/" + key_name + ".pem"
+	attempts = 5
 	success = False
 
 	print("Attempting to SSH into the instance...")
 	# Tries to connect 5 times as ports might not be open straight away
-	for x in range (5):
+	while attempts > 0:
 		try:
 			subprocess.run(
 				[
 					"ssh", "-o", "StrictHostKeyChecking=no",
 					"-i", key, "ec2-user@"+instance_ip, commands
-				],
+				], check=True # This line causes the subprocess to throw a Python exception if something fails
 				#stdout=subprocess.DEVNULL,
 				#stderr=subprocess.STDOUT
 			)
 			success = True
-			# break
-
+			break
 		except Exception as e:
-			print(e)
-			user_error_message = "There was an SSH-related error."
-			print(user_error_message)
-			create_log(user_error_message, e)
-			exit_program()
-		time.sleep(2)
+			pass
+		time.sleep(1)
 
 	if (not success):
 		user_error_message = "An SSH connection could not be established."
