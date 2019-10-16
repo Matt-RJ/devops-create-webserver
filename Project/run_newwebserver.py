@@ -19,7 +19,7 @@ def parse_sysargs():
 	config_order = ["image_id", "instance_type", "key_name", "security_group_name",
 				    "tag_key", "tag_value", "bucket_name", "location_constraint"]
     
-    # Default settings for EC2 instances, used if an arguments don't overwrite them.
+    # Default settings for EC2 instances, used if arguments don't overwrite them.
 	config = {
 		"image_id": "ami-0ce71448843cb18a1",
 		"instance_type": "t2.micro",
@@ -27,7 +27,7 @@ def parse_sysargs():
 		"security_group_name": "allow-ssh-http",
 		"tag_key": "DevOps",
 		"tag_value": "Assignment01",
-		"bucket_name": "MantasRajackas-DevOps-2019",
+		"bucket_name": "20079912-assignment1",
 		"location_constraint": "eu-west-1"
 	}
 
@@ -99,17 +99,13 @@ def main():
 		echo '<html>' > index.html
 		echo 'Private IP address: ' >> index.html
 		curl http://169.254.169.254/latest/meta-data/local-ipv4 >> index.html
-		echo '<br>Here is the image:<br> ' >> index.html
-		echo '<img src="https://s3-eu-west-1.amazonaws.com/%s/image.png">' >> index.html
+		echo '<br>Here is the image, downloaded automatically with curl:<br> ' >> index.html
+		echo '<img src="https://s3-eu-west-1.amazonaws.com/%s/images/image.png">' >> index.html
 		echo '</html>' >> index.html
 		sudo mkdir -p /var/www/html
 		sudo chmod 755 /var/www/html
 		sudo cp index.html /var/www/html/index.html
 	""" % (config["bucket_name"])
-
-	# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-	# TODO: FIX 'CANNOT CREATE REGULAR FILE INDEX.HTML: NO SUCH FILE OR DIRECTORY #
-	# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 	ec2_tools.ssh_into_ec2_instance(config["key_name"], instance_public_ip, commands)
 
