@@ -102,7 +102,7 @@ def main():
 		echo '</html>' >> index.html
 		sudo mkdir -p /var/www/html
 		sudo chmod 755 /var/www/html
-		sudo cp index.html /var/www/html/index.html
+		sudo mv index.html /var/www/html/index.html
 	""" % (config["bucket_name"])
 
 	ec2_tools.ssh_into_ec2_instance(config["key_name"], instance_public_ip, commands)

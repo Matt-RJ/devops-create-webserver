@@ -33,7 +33,7 @@ def create_directory(dir_name):
 
 def get_image(url, filename):
 	""" Uses curl to get an image from a url """
-	print("Getting " + filename + "from " + url + "...\n")
+	print("Getting " + filename + " from " + url + "...\n")
 	subprocess.run(['curl','-o', filename,url],stdout=subprocess.DEVNULL)
 	print(filename + " acquired successfully.")
 

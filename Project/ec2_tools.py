@@ -17,6 +17,9 @@ def create_ec2_instance(ec2_resource, image_id, key_name, security_group_name, i
 			MaxCount = 1,
 			InstanceType = instance_type,
 			UserData = user_data,
+			Monitoring = {
+				'Enabled': True
+			},
 			TagSpecifications = [
 			{
 				'ResourceType': 'instance',
@@ -71,6 +74,7 @@ def ssh_into_ec2_instance(key_name, instance_ip, commands):
 			break
 		except Exception as e:
 			pass
+			attempts = attempts - 1
 		time.sleep(1)
 
 	if (not success):
