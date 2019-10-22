@@ -4,3 +4,5 @@ Assignment 1 for DevOps, creates a AWS EC2 instance with a simple web server run
 This script creates an Amazon EC2 instance on the execution of run_newwebserver.py on a Linux machine. An Apache web server is automatically installed and run on the instance. While the instance runs, an S3 bucket is created and an image is downloaded automatically from the internet using curl and is displayed on the index page.
 
 Extra arguments may be given while executing the program to configure the type of instance, security group, tags, and more.
+
+Running start_monitoring.py with an instance ID as an argument will print out some metrics (e.g. average cpu usage, network traffic, etc.) once per minute to the console.
