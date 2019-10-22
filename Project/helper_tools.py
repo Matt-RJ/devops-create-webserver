@@ -1,4 +1,5 @@
 #file -- helper_tools.py --
+""" This file contains some helper functions for the rest of the program """
 
 from datetime import datetime
 import subprocess
@@ -7,6 +8,7 @@ import os
 def create_log(user_error_message, exception_message):
 	""" Saves a message to a log file under logs/Error log (Date time).txt """
 
+	# Sets up log file name
 	log_datetime = datetime.now().strftime("%d-%m-%Y %H-%M-%S")
 	dir_name = "logs"
 	file_name = "Error log " + log_datetime + ".txt"

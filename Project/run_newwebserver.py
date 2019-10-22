@@ -31,6 +31,7 @@ def parse_sysargs():
 		"location_constraint": "eu-west-1"
 	}
 
+	# Overwrites the config parameters with any sys arguments given
 	for i in range(1, len(sys.argv)):
 		config[config_order[i-1]] = sys.argv[i]
 
@@ -46,7 +47,7 @@ USER_DATA = open('user_data.txt', 'r').read()
 def main():
 	""" Main entry point of the program """
 	config = parse_sysargs()
-
+	
 	# Creates an EC2 resource for creating instances
 	try:
 		ec2_resource = boto3.resource('ec2')
@@ -105,10 +106,10 @@ def main():
 		sudo mv index.html /var/www/html/index.html
 	""" % (config["bucket_name"])
 
+	# Executes the commands on the instance
 	ec2_tools.ssh_into_ec2_instance(config["key_name"], instance_public_ip, commands)
 
 	ec2_tools.show_all_instances(ec2_resource)
-
 	print("The instance has been successfully created and configured.")
 
 	exit_program()

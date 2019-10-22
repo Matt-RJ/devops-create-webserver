@@ -9,6 +9,7 @@ def create_ec2_instance(ec2_resource, image_id, key_name, security_group_name, i
 	""" Creates a new ec2 instance and returns it """
 	print("Launching an EC2 instance...")
 	try:
+		# Creates the actual instance
 		new_instance = ec2_resource.create_instances(
 			ImageId = image_id,
 			KeyName = key_name,
@@ -35,8 +36,8 @@ def create_ec2_instance(ec2_resource, image_id, key_name, security_group_name, i
 
 		# Waits until the instance is running so that its IP may be acquired
 		new_instance[0].wait_until_running()
-
 		new_instance[0].reload()
+
 		print ("A new instance has been launched with id: " + new_instance[0].id)
 		print ("The instance's public IP is: " + new_instance[0].public_ip_address)
 
@@ -52,12 +53,13 @@ def create_ec2_instance(ec2_resource, image_id, key_name, security_group_name, i
 def ssh_into_ec2_instance(key_name, instance_ip, commands):
 	""" Executes commands on an instance using SSH """
 	key = "key/" + key_name + ".pem"
-	attempts = 8
+	attempts = 8 # How many times to try SSHing before failure
 	user_error_message = "An SSH connection could not be established after " + str(attempts) + " attempts."
 	success = False
 
 	print("Attempting to SSH into the instance...")
-	# Tries to connect 5 times as ports might not be open straight away
+
+	# Tries to connect multiple times as ports might not be open straight away
 	while attempts > 0:
 		try:
 			subprocess.run(
@@ -70,14 +72,14 @@ def ssh_into_ec2_instance(key_name, instance_ip, commands):
 			)
 			success = True
 			attempts = 0
-			
 			break
+
 		except Exception as e:
 			pass
 			attempts = attempts - 1
 		time.sleep(1)
 
-	if (not success):
+	if (not success): # If no sucessful SSH connection was established in the end
 		print(user_error_message)
 		create_log(user_error_message, "")
 		exit_program()
